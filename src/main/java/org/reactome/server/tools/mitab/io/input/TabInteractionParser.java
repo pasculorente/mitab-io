@@ -8,12 +8,13 @@ import org.reactome.server.tools.mitab.io.model.PsiMitabVersion;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TabInteractionParser implements InteractionParser {
+public class TabInteractionParser {
 
 	private static final String COLUMN_SEPARATOR = "\t";
-	private static final String FIELD_SEPARATOR = "\\|";
+	private static final String FIELD_SEPARATOR = "|";
 	private static final Map<PsiMitabVersion, TabInteractionParser> parsers = new TreeMap<>();
-	private int numberOfColumns;
+	private static final String EMPTY = "-";
+	private final int numberOfColumns;
 
 	private TabInteractionParser(int numberOfColumns) {
 		this.numberOfColumns = numberOfColumns;
@@ -30,7 +31,6 @@ public class TabInteractionParser implements InteractionParser {
 		return instance(PsiMitabVersion.TAB_27);
 	}
 
-	@Override
 	public Interaction toInteraction(String line) {
 		final String[] columns = line.split(COLUMN_SEPARATOR);
 		final Interaction interaction = new Interaction(numberOfColumns);
@@ -46,9 +46,9 @@ public class TabInteractionParser implements InteractionParser {
 		return interaction;
 	}
 
-	public final List<Field> parseField(String field) {
+	final List<Field> parseField(String field) {
 		if (field.equals("-") || field.isEmpty())
-			return null;
+			return Collections.emptyList();
 		final List<Field> fields = new LinkedList<>();
 		int start = 0;
 		int pos = start;
@@ -70,21 +70,18 @@ public class TabInteractionParser implements InteractionParser {
 		return fields;
 	}
 
-	@Override
 	public String toString(Interaction interaction) {
 		final List<String> stringedColumns = Arrays.stream(ColumnName.values())
+				.limit(numberOfColumns)
 				.map(interaction::get)
 				.map(this::toString)
 				.collect(Collectors.toList());
 		return String.join(COLUMN_SEPARATOR, stringedColumns);
 	}
 
-	@Override
-	public int getNumberOfColumns() {
-		return numberOfColumns;
-	}
-
 	private String toString(List<Field> fields) {
+		if (fields.isEmpty())
+			return EMPTY;
 		final List<String> stringed = fields.stream()
 				.map(this::toString)
 				.collect(Collectors.toList());
@@ -92,12 +89,16 @@ public class TabInteractionParser implements InteractionParser {
 	}
 
 	private String toString(Field field) {
-		String r = quote(field.getDatabase());
-		if (field.getIdentifier() != null)
-			r += ":" + quote(field.getIdentifier());
-		if (field.getDescription() != null)
-			r += "(" + quote(field.getDescription()) + ")";
-		return r;
+		if (field.getIdentifier() == null) {
+			return field.getDatabase();
+		} else {
+			String r = quote(field.getDatabase());
+			if (field.getIdentifier() != null)
+				r += ":" + quote(field.getIdentifier());
+			if (field.getDescription() != null)
+				r += "(" + quote(field.getDescription()) + ")";
+			return r;
+		}
 	}
 
 	private String quote(String value) {
@@ -114,4 +115,10 @@ public class TabInteractionParser implements InteractionParser {
 	}
 
 
+	public String headerLine() {
+		return Arrays.stream(ColumnName.values())
+				.limit(numberOfColumns)
+				.map(ColumnName::getName)
+				.collect(Collectors.joining(COLUMN_SEPARATOR));
+	}
 }

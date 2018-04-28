@@ -44,7 +44,7 @@ public enum ColumnName {
 	A_DETECTION_METHOD("Identification method participant A"),
 	B_DETECTION_METHOD("Identification method participant B");
 
-	private String name;
+	private final String name;
 
 	ColumnName(String name) {
 		this.name = name;

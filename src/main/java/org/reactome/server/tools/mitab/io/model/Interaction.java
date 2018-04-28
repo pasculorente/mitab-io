@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Interaction {
 
-	private final List<Field>[] values;
+	private final List[] values;
 
 	public Interaction(int size) {
 		this.values = new List[size];

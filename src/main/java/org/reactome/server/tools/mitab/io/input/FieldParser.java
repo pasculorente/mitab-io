@@ -2,15 +2,17 @@ package org.reactome.server.tools.mitab.io.input;
 
 import org.reactome.server.tools.mitab.io.model.Field;
 
-public class FieldParser {
+class FieldParser {
 
-	public static Field parse(String string) throws IllegalArgumentException {
+	private FieldParser() {
+	}
+
+	static Field parse(String string) throws IllegalArgumentException {
 		try {
 			return parsePrivate(string);
 		} catch (StringIndexOutOfBoundsException ex) {
 			throw new IllegalArgumentException(string, ex);
 		}
-
 	}
 
 	private static Field parsePrivate(String string) {
@@ -44,22 +46,24 @@ public class FieldParser {
 			// Quoted
 			string = string.substring(1);
 			if (string.isEmpty()) {
-			} else if (string.charAt(0) == '"') {
-				int end = closingQuotes(string);
-				value = string.substring(1, end);
-				string = string.substring(end + 1);
-			}
-			// unquoted
-			else {
-				final int end = string.indexOf('(');
-				if (end == -1) {
-					value = string;
-					return new Field(xref, value, null);
+				value = "";
+			} else {
+				if (string.charAt(0) == '"') {
+					int end = closingQuotes(string);
+					value = string.substring(1, end);
+					string = string.substring(end + 1);
 				}
-				value = string.substring(0, end);
-				string = string.substring(end);
+				// unquoted
+				else {
+					final int end = string.indexOf('(');
+					if (end == -1) {
+						value = string;
+						return new Field(xref, value, null);
+					}
+					value = string.substring(0, end);
+					string = string.substring(end);
+				}
 			}
-
 		}
 		// 3: description
 		if (!string.isEmpty() && string.charAt(0) == '(') {
