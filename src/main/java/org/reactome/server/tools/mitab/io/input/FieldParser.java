@@ -83,6 +83,12 @@ class FieldParser {
 		return new Field(xref, value, desc);
 	}
 
+	/**
+	 * Get the position of the next unescaped quote
+	 *
+	 * @param string field string
+	 * @return position of next unescaped quote or -1 if none
+	 */
 	private static int closingQuotes(String string) {
 		int end = string.indexOf('"', 1);
 		while (string.charAt(end - 1) == '\\')

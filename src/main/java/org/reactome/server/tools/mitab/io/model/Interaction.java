@@ -3,6 +3,11 @@ package org.reactome.server.tools.mitab.io.model;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents a MITAB line. An interaction is an array of lists of Fields: <code>List&lt;Field&gt;[]</code>. To access
+ * a column use {@link Interaction#get(int)} or {@link Interaction#get(ColumnName)}. This class can also be used for
+ * writing, using setters.
+ */
 public class Interaction {
 
 	private final List[] values;
@@ -11,12 +16,12 @@ public class Interaction {
 		this.values = new List[size];
 	}
 
-	void set(ColumnName name, List<Field> value) {
-		values[name.ordinal()] = value;
-	}
-
 	public void set(int column, List<Field> value) {
 		values[column] = value;
+	}
+
+	public void set(ColumnName columnName, List<Field> value ) {
+
 	}
 
 	/**
@@ -34,9 +39,9 @@ public class Interaction {
 	 * returns an empty list.
 	 */
 	public List<Field> get(ColumnName columnName) {
-		return values[columnName.ordinal()] == null
-				? Collections.emptyList()
-				: values[columnName.ordinal()];
+		final List<Field> fields = columnName.get(this);
+		if (fields == null) return Collections.emptyList();
+		return fields;
 	}
 
 }

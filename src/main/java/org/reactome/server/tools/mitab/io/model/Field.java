@@ -3,7 +3,6 @@ package org.reactome.server.tools.mitab.io.model;
 public class Field {
 	private final String database, identifier, description;
 
-
 	public Field(String database, String identifier, String description) {
 		this.database = database;
 		this.identifier = identifier;
