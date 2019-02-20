@@ -1,12 +1,12 @@
-package org.reactome.server.tools.mitab.io.output;
+package org.uichuimi.mitab.io.output;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.reactome.server.tools.mitab.io.InteractionReader;
-import org.reactome.server.tools.mitab.io.InteractionWriter;
-import org.reactome.server.tools.mitab.io.model.Interaction;
-import org.reactome.server.tools.mitab.io.model.PsiMitabVersion;
+import org.uichuimi.mitab.io.InteractionReader;
+import org.uichuimi.mitab.io.InteractionWriter;
+import org.uichuimi.mitab.io.model.Interaction;
+import org.uichuimi.mitab.io.model.PsiMitabVersion;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class InteractionWriterTest {
 
-	private static final File FILE = new File("src/test/resources/org/reactome/server/tools/mitab/io/output", "test-output.mitab27");
+	private static final File FILE = new File(InteractionWriterTest.class.getResource("/org/uichuimi/mitab/io/output/test-output.mitab27").getPath());
 
 	@Test
 	public void test() {

@@ -1,10 +1,10 @@
-package org.reactome.server.tools.mitab.io.input;
+package org.uichuimi.mitab.io.input;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.reactome.server.tools.mitab.io.InteractionReader;
-import org.reactome.server.tools.mitab.io.model.ColumnName;
-import org.reactome.server.tools.mitab.io.model.Interaction;
+import org.uichuimi.mitab.io.InteractionReader;
+import org.uichuimi.mitab.io.model.ColumnName;
+import org.uichuimi.mitab.io.model.Interaction;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +21,7 @@ public class InteractionReaderTest {
 			final Interaction interaction = interactions.get(0);
 			Assert.assertEquals(2, interaction.get(ColumnName.ID).size());
 			Assert.assertEquals(9, interaction.get(ColumnName.A_ALT_ID).size());
-			Assert.assertEquals("2001/01/10", interaction.get(ColumnName.CREATION).get(0).getDatabase());
+			Assert.assertEquals("2001/01/10", interaction.get(ColumnName.CREATION).get(0).getXref());
 		} catch (IOException e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
