@@ -1,9 +1,9 @@
-package org.reactome.server.tools.mitab.io.input;
+package org.uichuimi.mitab.io.input;
 
-import org.reactome.server.tools.mitab.io.model.ColumnName;
-import org.reactome.server.tools.mitab.io.model.Field;
-import org.reactome.server.tools.mitab.io.model.Interaction;
-import org.reactome.server.tools.mitab.io.model.PsiMitabVersion;
+import org.uichuimi.mitab.io.model.ColumnName;
+import org.uichuimi.mitab.io.model.Field;
+import org.uichuimi.mitab.io.model.Interaction;
+import org.uichuimi.mitab.io.model.PsiMitabVersion;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -112,12 +112,12 @@ public class PsiInteractionParser {
 	}
 
 	private String toString(Field field) {
-		if (field.getIdentifier() == null) {
-			return field.getDatabase();
+		if (field.getValue() == null) {
+			return field.getXref();
 		} else {
-			String r = quote(field.getDatabase());
-			if (field.getIdentifier() != null)
-				r += ":" + quote(field.getIdentifier());
+			String r = quote(field.getXref());
+			if (field.getValue() != null)
+				r += ":" + quote(field.getValue());
 			if (field.getDescription() != null)
 				r += "(" + quote(field.getDescription()) + ")";
 			return r;

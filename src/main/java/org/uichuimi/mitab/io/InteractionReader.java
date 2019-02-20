@@ -1,8 +1,8 @@
-package org.reactome.server.tools.mitab.io;
+package org.uichuimi.mitab.io;
 
-import org.reactome.server.tools.mitab.io.input.PsiInteractionParser;
-import org.reactome.server.tools.mitab.io.model.Interaction;
-import org.reactome.server.tools.mitab.io.model.PsiMitabVersion;
+import org.uichuimi.mitab.io.input.PsiInteractionParser;
+import org.uichuimi.mitab.io.model.Interaction;
+import org.uichuimi.mitab.io.model.PsiMitabVersion;
 
 import java.io.BufferedReader;
 import java.io.IOException;
