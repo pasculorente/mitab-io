@@ -19,6 +19,12 @@ public class Field {
 		this.description = description;
 	}
 
+	public Field(Field field) {
+		this.xref = field.xref;
+		this.value = field.value;
+		this.description = field.description;
+	}
+
 	public String getValue() {
 		return value;
 	}
@@ -33,6 +39,10 @@ public class Field {
 
 	@Override
 	public String toString() {
-		return String.join(":", xref, value, description);
+		return "Field{" +
+				"xref='" + xref + '\'' +
+				", value='" + value + '\'' +
+				", description='" + description + '\'' +
+				'}';
 	}
 }

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class InteractionWriterTest {
 
-	private static final File FILE = new File(InteractionWriterTest.class.getResource("/org/uichuimi/mitab/io/output/test-output.mitab27").getPath());
+	private static final File FILE = new File(InteractionWriterTest.class.getResource("//output/test-output.mitab27").getPath());
 
 	@Test
 	public void test() {
@@ -32,7 +32,7 @@ public class InteractionWriterTest {
 			final String expected = IOUtils.toString(getClass().getResourceAsStream("test.mitab27"), Charset.defaultCharset());
 			final String actual = IOUtils.toString(new FileInputStream(FILE), Charset.defaultCharset());
 			for (int i = 0; i < expected.length(); i++)
-				Assert.assertEquals("" + i + " " + expected.substring(Math.max(0,i - 10), i), String.valueOf(expected.charAt(i)),  String.valueOf(actual.charAt(i)));
+				Assert.assertEquals("" + i + " " + expected.substring(Math.max(0, i - 10), i), String.valueOf(expected.charAt(i)), String.valueOf(actual.charAt(i)));
 			Assert.assertEquals(expected, actual);
 		} catch (IOException e) {
 			e.printStackTrace();
