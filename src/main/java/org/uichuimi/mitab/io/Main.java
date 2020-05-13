@@ -24,14 +24,17 @@ import static picocli.CommandLine.Option;
 		description = "umpteenth package with tools to work with PSI MITAB files")
 public class Main implements Callable<Integer> {
 
+	@Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
+	boolean usageHelpRequested;
+
+	@Option(names = {"-v", "--verbose"})
+	private boolean verbose;
+
 	@Option(names = {"-i", "--input"})
 	private File input;
 
 	@Option(names = {"-o", "--output"})
 	private File output;
-
-	@Option(names = {"-v", "--verbose"})
-	private boolean verbose;
 
 	@Option(names = {"--neo4j"})
 	private File neo4j;
