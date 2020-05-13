@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
-public class Neo4jWriter implements Acceptor<Interaction> {
+public class Neo4jWriter implements Acceptor<Interaction>, AutoCloseable {
 
 	private static final String SEPARATOR = "\t";
 	private final PrintStream nodes;
@@ -75,18 +75,6 @@ public class Neo4jWriter implements Acceptor<Interaction> {
 			uniques.put(hash, row);
 		interactors.add(aId);
 		interactors.add(bId);
-
-		//		fields.add(a.getBiologicalRoles().get(0).getIdentifier());
-//		fields.add(b.getBiologicalRoles().get(0).getIdentifier());
-//		fields.add(a.getExperimentalRoles().get(0).getIdentifier());
-//		fields.add(b.getExperimentalRoles().get(0).getIdentifier());
 	}
 
-	private String getGeneId(Interactor a) {
-		return a.getCrossReferences().stream()
-				.filter(identifier -> identifier.getDatabase().equals("ensembl"))
-				.filter(identifier -> identifier.getValue().startsWith("ENSG"))
-				.map(crossReference -> crossReference.getValue().replace("ENSG", ""))
-				.findFirst().orElse(null);
-	}
 }
