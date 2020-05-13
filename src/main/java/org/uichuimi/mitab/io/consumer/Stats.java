@@ -63,15 +63,18 @@ public class Stats implements Acceptor<Interaction> {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(interactors.size()).append(" interactors").append(NEWLINE)
 				.append(lines).append(" interactions").append(NEWLINE)
-				.append("Methods").append(NEWLINE);
-		methods.forEach((key, value) -> builder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append(NEWLINE));
-		builder.append("Types").append(NEWLINE);
-		types.forEach((key, value) -> builder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append(NEWLINE));
-		builder.append("Biological roles").append(NEWLINE);
-		bio.forEach((key, value) -> builder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append(NEWLINE));
-		builder.append("Experimental roles").append(NEWLINE);
-		exp.forEach((key, value) -> builder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append(NEWLINE));
+				.append("Methods (").append(methods.size()).append(")").append(NEWLINE);
+		methods.forEach((key, value) -> append(builder, key, value));
+		builder.append("Types (").append(types.size()).append(")").append(NEWLINE);
+		types.forEach((key, value) -> append(builder, key, value));
+		builder.append("Biological roles (").append(bio.size()).append(")").append(NEWLINE);
+		bio.forEach((key, value) -> append(builder, key, value));
+		builder.append("Experimental roles (").append(exp.size()).append(")").append(NEWLINE);
+		exp.forEach((key, value) -> append(builder, key, value));
 		return builder.toString();
+	}
 
+	private void append(StringBuilder builder, String key, String value) {
+		builder.append("\t").append(key).append(KEY_VALUE_SEPARATOR).append(value).append(NEWLINE);
 	}
 }
