@@ -234,7 +234,7 @@ public class PsiInteractionParser {
 			// Context is changed every time a quote " is found in the string that is not preceded by a backslash \.
 			if (line.charAt(pos) == QUOTE && (pos == 0 || line.charAt(pos - 1) != '\\'))
 				quoted = !quoted;
-			if (line.substring(pos, pos + separator.length()).equals(separator) && !quoted) {
+			if (line.startsWith(separator, pos) && !quoted) {
 				rtn.add(line.substring(start, pos));
 				start = pos + 1;
 			}
@@ -321,9 +321,6 @@ public class PsiInteractionParser {
 
 		List<? extends Field> getValue(Interaction interaction) {
 			return getter.apply(interaction);
-		}
-		Function<Interaction, List<? extends Field>> getGetter() {
-			return getter;
 		}
 	}
 }
