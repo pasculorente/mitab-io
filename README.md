@@ -92,17 +92,17 @@ _xref:**value**(description)|xref:value(description)..._
 
 Column |    Name    | PSI-MI column
 ------ | ---------- | -------------
-     1 | ID         |            14
-     2 | TYPE       |            12
-     3 | METHOD     |             7
-     4 | ORGANISM   |            29
-     5 | SCORE      |            15
-     6 | A_ID       |             1
-     7 | B_ID       |             2
-     8 | A_BIO_ROLE |            17
-     9 | B_BIO_ROLE |            18
-    10 | A_EXP_ROLE |            19
-    11 | B_EXP_ROLE |            20      
+1      | ID         |            14
+2      | TYPE       |            12
+3      | METHOD     |             7
+4      | ORGANISM   |            29
+5      | SCORE      |            15
+6      | A_ID       |             1
+7      | B_ID       |             2
+8      | A_BIO_ROLE |            17
+9      | B_BIO_ROLE |            18
+10     | A_EXP_ROLE |            19
+11     | B_EXP_ROLE |            20      
 
 The file looks like
 
@@ -158,7 +158,7 @@ Created files are:
 
 Column |    Name    | PSI-MI column
 ------ | ---------- | -------------
-     1 | identifier:ID(interactor) | 1 / 2
+1      | identifier:ID(interactor) | 1 / 2
 
 Example:
 
@@ -175,12 +175,12 @@ EBI-7121821 |
 
 Column |          Name         | PSI-MI column
 ------ | --------------------- | -------------
-     1 | :START_ID(interactor) |             1
-     2 | :END_ID(interactor)   |             2
-     3 | identifier            |            14
-     4 | type                  |            12
-     5 | method                |             7
-     6 | score                 |            15
+1      | :START_ID(interactor) |             1
+2      | :END_ID(interactor)   |             2
+3      | identifier            |            14
+4      | type                  |            12
+5      | method                |             7
+6      | score                 |            15
 
 Example:
 
