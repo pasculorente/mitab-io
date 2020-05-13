@@ -1,9 +1,11 @@
 package org.uichuimi.mitab.io;
 
 import org.uichuimi.mitab.io.consumer.Acceptor;
+import org.uichuimi.mitab.io.consumer.Neo4jWriter;
 import org.uichuimi.mitab.io.consumer.Progress;
 import org.uichuimi.mitab.io.consumer.Stats;
 import org.uichuimi.mitab.io.model.Interaction;
+import org.uichuimi.mitab.io.output.TsvWriter;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -31,6 +33,9 @@ public class Main implements Callable<Integer> {
 	@Option(names = {"-v", "--verbose"})
 	private boolean verbose;
 
+	@Option(names = {"--neo4j"})
+	private File neo4j;
+
 	private long start;
 
 	public static void main(String[] args) {
@@ -54,7 +59,8 @@ public class Main implements Callable<Integer> {
 		final Progress progress = new Progress(console);
 		consumers.add(stats);
 		consumers.add(progress);
-//		consumers.add(new TsvWriter(out));
+		consumers.add(new TsvWriter(out));
+		if (neo4j != null) consumers.add(new Neo4jWriter(neo4j));
 
 		try (InteractionReader reader = new InteractionReader(in)) {
 			consumers.forEach(Acceptor::start);
