@@ -58,7 +58,7 @@ public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 
 	private void writeWithHeader(Interaction interaction) {
 		writeHeader();
-		writePrivate(interaction);
+		writePrivate(interaction);  
 		this.writer = withoutHeader;
 	}
 
@@ -69,20 +69,29 @@ public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 			fields.add(identifier);
 			fields.add(interaction.getTypes().get(0).getIdentifier());
 			fields.add(interaction.getDetectionMethods().get(0).getIdentifier());
-			fields.add(interaction.getOrganism().get(0).getIdentifier());
+			if (interaction.getOrganism().isEmpty()) fields.add("");
+			else fields.add(interaction.getOrganism().get(0).getIdentifier());
 			if (interaction.getConfidenceScores().isEmpty()) {
 //				final String msg = String.format("No confidence score for interaction %s at line %d", identifier, line);
 //				Logger.getLogger("mitab").log(Level.WARNING, msg);
-				fields.add("-");
+				fields.add("");
 			} else fields.add(interaction.getConfidenceScores().get(0).getValue());
 			final Interactor a = interaction.getInteractorA();
 			final Interactor b = interaction.getInteractorB().getPrimaryIdentifier() == null ? a : interaction.getInteractorB();
 			fields.add(a.getPrimaryIdentifier().getIdentifier());
 			fields.add(b.getPrimaryIdentifier().getIdentifier());
-			fields.add(a.getBiologicalRoles().get(0).getIdentifier());
-			fields.add(b.getBiologicalRoles().get(0).getIdentifier());
-			fields.add(a.getExperimentalRoles().get(0).getIdentifier());
-			fields.add(b.getExperimentalRoles().get(0).getIdentifier());
+
+			if (a.getBiologicalRoles().isEmpty()) fields.add("");
+			else fields.add(a.getBiologicalRoles().get(0).getIdentifier());
+
+			if (b.getBiologicalRoles().isEmpty()) fields.add("");
+			else fields.add(b.getBiologicalRoles().get(0).getIdentifier());
+
+			if (a.getExperimentalRoles().isEmpty()) fields.add("");
+			else fields.add(a.getExperimentalRoles().get(0).getIdentifier());
+			if (b.getExperimentalRoles().isEmpty()) fields.add("");
+			else fields.add(b.getExperimentalRoles().get(0).getIdentifier());
+
 			output.println(String.join(SEPARATOR, fields));
 			line++;
 		} catch (RuntimeException any) {
