@@ -14,14 +14,12 @@ import java.nio.charset.Charset;
 public class TsvWriterTest {
 
 	@Test
-	public void write() throws IOException {
+	public void write() throws Exception {
 		final InputStream resource = getClass().getResourceAsStream("/input/sample-interactions.mitab27");
 		final File tempFile = File.createTempFile("tsv", ".tsv");
 		try (final InteractionReader reader = new InteractionReader(resource);
 		     final TsvWriter writer = new TsvWriter(tempFile)) {
 			reader.forEach(writer);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		try {

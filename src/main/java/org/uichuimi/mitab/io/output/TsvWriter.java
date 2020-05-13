@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 
 	private static final String SEPARATOR = "\t";
-	private static final List<String> HEADERS = Arrays.asList("ID", "TYPE", "METHOD", "ORGANISM", "SCORE", "A", "B", "A_BIO_ROLE", "B_BIO_ROLE", "A_EXP_ROLE", "B_EXP_ROLE");
+	private static final List<String> HEADERS = Arrays.asList("ID", "TYPE", "METHOD", "ORGANISM", "SCORE", "A_ID", "B_ID", "A_BIO_ROLE", "B_BIO_ROLE", "A_EXP_ROLE", "B_EXP_ROLE");
 
 	private final Consumer<Interaction> withoutHeader = this::writePrivate;
 	private final Consumer<Interaction> withHeader = this::writeWithHeader;
