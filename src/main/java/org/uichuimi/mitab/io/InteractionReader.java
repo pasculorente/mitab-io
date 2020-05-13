@@ -5,10 +5,8 @@ import org.uichuimi.mitab.io.model.Interaction;
 import org.uichuimi.mitab.io.model.PsiMitabVersion;
 
 import java.io.*;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.zip.GZIPInputStream;
@@ -42,23 +40,6 @@ public class InteractionReader implements AutoCloseable, Iterable<Interaction>, 
 
 	public InteractionReader(InputStream inputStream) throws IOException {
 		this(inputStream, PsiMitabVersion.getDefault());
-	}
-
-	/**
-	 * Reads a PSI-MITAB input in TAB_27 version.
-	 */
-	public static Stream<Interaction> read(InputStream inputStream) throws IOException {
-		return read(inputStream, PsiMitabVersion.TAB_27);
-	}
-
-	/**
-	 * Reads a PSI-MITAB input stream, generating an interaction out of each line.
-	 */
-	public static Stream<Interaction> read(InputStream inputStream, PsiMitabVersion version) throws IOException {
-		final PsiInteractionParser parser = PsiInteractionParser.instance(version);
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-		reader.readLine(); // Skip header
-		return reader.lines().map(parser::toInteraction);
 	}
 
 	@Override
@@ -97,5 +78,9 @@ public class InteractionReader implements AutoCloseable, Iterable<Interaction>, 
 	public Stream<Interaction> interactions() {
 		return StreamSupport.stream(Spliterators
 				.spliteratorUnknownSize(this, Spliterator.ORDERED), false);
+	}
+
+	public List<Interaction> readAll() {
+		return interactions().collect(Collectors.toList());
 	}
 }
