@@ -22,12 +22,12 @@ public class Neo4jWriter implements Acceptor<Interaction>, AutoCloseable {
 			throw new IllegalArgumentException(path + " is not accessible");
 		nodes = new PrintStream(FileUtils.getOutputStream(new File(path, "nodes.tsv.gz")));
 		relationships = new PrintStream(FileUtils.getOutputStream(new File(path, "relationships.tsv.gz")));
+		nodes.println(String.join("\t", Collections.singletonList("identifier:ID(interactor)")));
+		relationships.println(String.join("\t", Arrays.asList(":START_ID(gene)", ":END_ID(gene)", "identifier", "type", "method", "score")));
 	}
 
 	@Override
 	public void start() {
-		nodes.println(String.join("\t", Collections.singletonList("identifier:ID(interactor)")));
-		relationships.println(String.join("\t", Arrays.asList(":START_ID(gene)", ":END_ID(gene)", "identifier", "type", "method", "score")));
 	}
 
 	@Override
