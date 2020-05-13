@@ -10,7 +10,7 @@ Small library to work with, i.e. _parse_, PSI-MI TAB files (https://psicquic.git
 
 PSI-MI stands for Proteomics Standards Initiative - Molecular Interaction. 
 
-Long story short, this library helps parsing PSI-MI TAB files (like intact.txt.gz, or BIOGRID-ALL-3.5.185.mitab.zip).
+Long story short, this library helps to parse PSI-MI TAB files (like intact.txt.gz, or BIOGRID-ALL-3.5.185.mitab.zip).
 
 ## Features
 - supports txt, gzip and zip files
@@ -90,23 +90,23 @@ For each column, we extract the first value
 
 _xref:**value**(description)|xref:value(description)..._
 
- Column |    Name    | PSI-MI column
- ------ | ---------- | -------------
-      1 | ID         |            14
-      2 | TYPE       |            12
-      3 | METHOD     |             7
-      4 | ORGANISM   |            29
-      5 | SCORE      |            15
-      6 | A_ID       |             1
-      7 | B_ID       |             2
-      8 | A_BIO_ROLE |            17
-      9 | B_BIO_ROLE |            18
-     10 | A_EXP_ROLE |            19
-     11 | B_EXP_ROLE |            20      
+Column |    Name    | PSI-MI column
+------ | ---------- | -------------
+     1 | ID         |            14
+     2 | TYPE       |            12
+     3 | METHOD     |             7
+     4 | ORGANISM   |            29
+     5 | SCORE      |            15
+     6 | A_ID       |             1
+     7 | B_ID       |             2
+     8 | A_BIO_ROLE |            17
+     9 | B_BIO_ROLE |            18
+    10 | A_EXP_ROLE |            19
+    11 | B_EXP_ROLE |            20      
 
 The file looks like
 
-ID | TYPE | METHOD | ORGANISM | SCORE | A_ID | B_ID | A_BIO_ROLE | B_BIO_ROLE | A_EXP_ROLE | B_EXP_ROLE
+ID  | TYPE | METHOD | ORGANISM | SCORE | A_ID | B_ID | A_BIO_ROLE | B_BIO_ROLE | A_EXP_ROLE | B_EXP_ROLE
 --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---  
 EBI-7121552 | MI:0407 | MI:0084 | -1 | 0.56 | P49418 | O43426 | MI:0499 | MI:0499 | MI:0498 | MI:0496
 EBI-7121634 | MI:0407 | MI:0084 | -1 | 0.44 | P49418 | EBI-7121639 | MI:0499 | MI:0499 | MI:0498 | MI:0496
@@ -156,9 +156,9 @@ Created files are:
 
 **nodes.tsv.gz**
 
- Column |    Name    | PSI-MI column
- ------ | ---------- | -------------
-      1 | identifier:ID(interactor) | 1 / 2
+Column |    Name    | PSI-MI column
+------ | ---------- | -------------
+     1 | identifier:ID(interactor) | 1 / 2
 
 Example:
 
@@ -173,14 +173,14 @@ EBI-7121821 |
 
 **relationships.tsv.gz**
 
- Column |          Name         | PSI-MI column
- ------ | --------------------- | -------------
-      1 | :START_ID(interactor) |             1
-      2 | :END_ID(interactor)   |             2
-      3 | identifier            |            14
-      4 | type                  |            12
-      5 | method                |             7
-      6 | score                 |            15
+Column |          Name         | PSI-MI column
+------ | --------------------- | -------------
+     1 | :START_ID(interactor) |             1
+     2 | :END_ID(interactor)   |             2
+     3 | identifier            |            14
+     4 | type                  |            12
+     5 | method                |             7
+     6 | score                 |            15
 
 Example:
 
