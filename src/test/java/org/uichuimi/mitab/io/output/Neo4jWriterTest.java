@@ -4,8 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uichuimi.mitab.io.FileUtils;
-import org.uichuimi.mitab.io.InteractionReader;
-import org.uichuimi.mitab.io.consumer.Neo4jWriter;
+import org.uichuimi.mitab.io.input.InteractionReader;
 
 import java.io.File;
 import java.io.InputStream;

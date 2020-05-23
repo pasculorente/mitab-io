@@ -23,14 +23,14 @@ public class Interaction {
 	private List<ConfidenceScore> confidenceScores = Collections.emptyList();
 	private List<ComplexExpansion> complexExpansion = Collections.emptyList();
 	private List<Parameter> parameters = Collections.emptyList();
-	private List<Date> creation = Collections.emptyList();
-	private List<Date> update = Collections.emptyList();
+	private Date creation;
+	private Date update;
 	private List<Checksum> checksums = Collections.emptyList();
-	private List<Negative> negative = Collections.emptyList();
+	private Negative negative;
 	private CausalRegulatoryMechanism causalRegulatoryMechanism;
 	private CausalStatement causalStatement;
 
-	private Interaction(Interactor interactorA, Interactor interactorB) {
+	public Interaction(Interactor interactorA, Interactor interactorB) {
 		this.interactorA = interactorA;
 		this.interactorB = interactorB;
 	}
@@ -347,12 +347,13 @@ public class Interaction {
 	 * <dd><strong>date</strong>: as yyyy/mm/dd</dd>
 	 * </dl>
 	 * Ex:2010/10/17
+	 * @return
 	 */
-	public List<Date> getCreation() {
+	public Date getCreation() {
 		return creation;
 	}
 
-	public void setCreation(List<Date> creation) {
+	public void setCreation(Date creation) {
 		this.creation = creation;
 	}
 
@@ -366,12 +367,13 @@ public class Interaction {
 	 * <dd><strong>date</strong>: as yyyy/mm/dd</dd>
 	 * </dl>
 	 * Ex:2011/12/13
+	 * @return
 	 */
-	public List<Date> getUpdate() {
+	public Date getUpdate() {
 		return update;
 	}
 
-	public void setUpdate(List<Date> update) {
+	public void setUpdate(Date update) {
 		this.update = update;
 	}
 
@@ -409,12 +411,13 @@ public class Interaction {
 	 * </dl>
 	 * <p>
 	 * Ex: true
+	 * @return
 	 */
-	public List<Negative> getNegative() {
+	public Negative getNegative() {
 		return negative;
 	}
 
-	public void setNegative(List<Negative> negative) {
+	public void setNegative(Negative negative) {
 		this.negative = negative;
 	}
 

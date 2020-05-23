@@ -1,7 +1,7 @@
 package org.uichuimi.mitab.io.model;
 
 public class Alias extends Field {
-	Alias(String database, String name, String type) {
+	public Alias(String database, String name, String type) {
 		super(database, name, type);
 	}
 

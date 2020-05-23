@@ -2,7 +2,7 @@ package org.uichuimi.mitab.io.model;
 
 public class ConfidenceScore extends Field {
 
-	ConfidenceScore(String type, String value) {
+	public ConfidenceScore(String type, String value) {
 		super(type, value);
 	}
 

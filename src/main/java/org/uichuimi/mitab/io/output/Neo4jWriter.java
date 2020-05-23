@@ -1,6 +1,7 @@
-package org.uichuimi.mitab.io.consumer;
+package org.uichuimi.mitab.io.output;
 
 import org.uichuimi.mitab.io.FileUtils;
+import org.uichuimi.mitab.io.consumer.Acceptor;
 import org.uichuimi.mitab.io.model.Interaction;
 import org.uichuimi.mitab.io.model.Interactor;
 

@@ -1,10 +1,11 @@
 package org.uichuimi.mitab.io;
 
 import org.uichuimi.mitab.io.consumer.Acceptor;
-import org.uichuimi.mitab.io.consumer.Neo4jWriter;
 import org.uichuimi.mitab.io.consumer.Progress;
 import org.uichuimi.mitab.io.consumer.Stats;
+import org.uichuimi.mitab.io.input.InteractionReader;
 import org.uichuimi.mitab.io.model.Interaction;
+import org.uichuimi.mitab.io.output.Neo4jWriter;
 import org.uichuimi.mitab.io.output.TsvWriter;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;

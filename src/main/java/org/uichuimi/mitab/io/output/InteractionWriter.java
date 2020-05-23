@@ -1,4 +1,4 @@
-package org.uichuimi.mitab.io;
+package org.uichuimi.mitab.io.output;
 
 import org.uichuimi.mitab.io.input.PsiInteractionParser;
 import org.uichuimi.mitab.io.model.Interaction;
@@ -9,7 +9,7 @@ import java.io.*;
 public class InteractionWriter implements AutoCloseable {
 
 	private final PrintStream printStream;
-	private PsiInteractionParser parser;
+	private final PsiInteractionParser parser;
 
 	public InteractionWriter(OutputStream outputStream, PsiMitabVersion version) {
 		printStream = new PrintStream(outputStream);
@@ -18,8 +18,7 @@ public class InteractionWriter implements AutoCloseable {
 	}
 
 	public InteractionWriter(OutputStream outputStream) {
-		printStream = new PrintStream(outputStream);
-		parser = PsiInteractionParser.instance();
+		this(outputStream, PsiMitabVersion.getDefault());
 	}
 
 	public InteractionWriter(File file) throws FileNotFoundException {

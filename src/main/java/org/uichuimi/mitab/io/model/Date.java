@@ -2,7 +2,7 @@ package org.uichuimi.mitab.io.model;
 
 public class Date extends Field{
 
-	Date(String date) {
+	public Date(String date) {
 		super(date);
 	}
 

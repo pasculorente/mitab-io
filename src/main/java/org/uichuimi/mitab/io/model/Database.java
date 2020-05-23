@@ -1,7 +1,7 @@
 package org.uichuimi.mitab.io.model;
 
 public class Database extends Field {
-	Database(String database, String identifier, String name) {
+	public Database(String database, String identifier, String name) {
 		super(database, identifier, name);
 	}
 

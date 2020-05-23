@@ -3,7 +3,7 @@ package org.uichuimi.mitab.io.output;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uichuimi.mitab.io.InteractionReader;
+import org.uichuimi.mitab.io.input.InteractionReader;
 
 import java.io.File;
 import java.io.FileInputStream;

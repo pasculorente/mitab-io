@@ -2,7 +2,6 @@ package org.uichuimi.mitab.io.input;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.uichuimi.mitab.io.InteractionReader;
 import org.uichuimi.mitab.io.model.Interaction;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class InteractionReaderTest {
 			final Interaction interaction = interactions.get(0);
 			Assert.assertEquals(2, interaction.getIdentifiers().size());
 			Assert.assertEquals(9, interaction.getInteractorA().getAlternativeIdentifiers().size());
-			Assert.assertEquals("2001/01/10", interaction.getCreation().get(0).getXref());
+			Assert.assertEquals("2001/01/10", interaction.getCreation().getDate());
 		} catch (IOException e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());

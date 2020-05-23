@@ -1,6 +1,5 @@
-package org.uichuimi.mitab.io;
+package org.uichuimi.mitab.io.input;
 
-import org.uichuimi.mitab.io.input.PsiInteractionParser;
 import org.uichuimi.mitab.io.model.Interaction;
 import org.uichuimi.mitab.io.model.PsiMitabVersion;
 

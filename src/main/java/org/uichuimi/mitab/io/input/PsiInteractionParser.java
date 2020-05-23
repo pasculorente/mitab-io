@@ -112,11 +112,11 @@ public class PsiInteractionParser {
 					(interaction, fields) -> interaction.setParameters(fields.stream().map(Parameter::new).collect(Collectors.toList())),
 					Interaction::getParameters),
 			new Column("Creation date",
-					(interaction, fields) -> interaction.setCreation(fields.stream().map(Date::new).collect(Collectors.toList())),
-					Interaction::getCreation),
+					(interaction, fields) -> interaction.setCreation(fields.isEmpty() ? null : new Date(fields.get(0))),
+					interaction -> List.of(interaction.getCreation())),
 			new Column("Update date",
-					(interaction, fields) -> interaction.setUpdate(fields.stream().map(Date::new).collect(Collectors.toList())),
-					Interaction::getUpdate),
+					(interaction, fields) -> interaction.setUpdate(fields.isEmpty() ? null : new Date(fields.get(0))),
+					interaction -> List.of(interaction.getUpdate())),
 			new Column("Checksum(s) interactor A",
 					(interaction, fields) -> interaction.getInteractorA().setChecksums(fields.stream().map(Checksum::new).collect(Collectors.toList())),
 					interaction -> interaction.getInteractorA().getChecksums()),
@@ -127,8 +127,8 @@ public class PsiInteractionParser {
 					(interaction, fields) -> interaction.setChecksums(fields.stream().map(Checksum::new).collect(Collectors.toList())),
 					Interaction::getChecksums),
 			new Column("Negative",
-					(interaction, fields) -> interaction.setNegative(fields.stream().map(Negative::new).collect(Collectors.toList())),
-					Interaction::getNegative),
+					(interaction, fields) -> interaction.setNegative(fields.isEmpty() ? null : new Negative(fields.get(0))),
+					interaction -> interaction.getNegative() == null ? List.of() : List.of(interaction.getNegative())),
 			new Column("Feature(s) interactor A",
 					(interaction, fields) -> interaction.getInteractorA().setFeatures(fields.stream().map(Feature::new).collect(Collectors.toList())),
 					interaction -> interaction.getInteractorA().getFeatures()),
@@ -187,8 +187,7 @@ public class PsiInteractionParser {
 	/**
 	 * Get an instance of {@link PsiInteractionParser} for a determined version.
 	 *
-	 * @param version
-	 * 		MITAB version to parse input
+	 * @param version MITAB version to parse input
 	 * @return a {@link PsiInteractionParser} instance
 	 */
 	public static PsiInteractionParser instance(PsiMitabVersion version) {
@@ -208,7 +207,7 @@ public class PsiInteractionParser {
 		for (int i = 0; i < columns.size(); i++) {
 			try {
 				final List<Field> fields = parseField(columns.get(i));
-				COLUMNS.get(i).getSetter().accept(interaction, fields);
+				COLUMNS.get(i).set(interaction, fields);
 			} catch (StringIndexOutOfBoundsException ex) {
 				throw new RuntimeException(String.format("For column %s, value [%s]", COLUMNS.get(i).getName(), columns.get(i)), ex);
 			}
@@ -248,8 +247,7 @@ public class PsiInteractionParser {
 	/**
 	 * Transforms the value inside field into an object of type Field.
 	 *
-	 * @param field
-	 * 		string value of a field
+	 * @param field string value of a field
 	 * @return a list of Fields. If fields is the empty value (-) or the empty string, an empty list
 	 * is returned
 	 */
@@ -264,7 +262,7 @@ public class PsiInteractionParser {
 	public String toString(Interaction interaction) {
 		return COLUMNS.stream()
 				.limit(numberOfColumns)
-				.map(column -> column.getValue(interaction))
+				.map(column -> column.get(interaction))
 				.map(this::toString)
 				.collect(Collectors.joining(COLUMN_SEPARATOR));
 	}
@@ -296,7 +294,10 @@ public class PsiInteractionParser {
 	}
 
 	private boolean mustBeQuoted(String value) {
-		return RESERVED.stream().anyMatch(value::contains);
+		for (String reserved : RESERVED)
+			if (value.contains(reserved))
+				return true;
+		return false;
 	}
 
 	private static class Column {
@@ -315,11 +316,11 @@ public class PsiInteractionParser {
 			return name;
 		}
 
-		BiConsumer<Interaction, List<Field>> getSetter() {
-			return setter;
+		void set(Interaction interaction, List<Field> fields) {
+			setter.accept(interaction, fields);
 		}
 
-		List<? extends Field> getValue(Interaction interaction) {
+		List<? extends Field> get(Interaction interaction) {
 			return getter.apply(interaction);
 		}
 	}
