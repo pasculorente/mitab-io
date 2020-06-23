@@ -43,7 +43,7 @@ public class Stats implements Acceptor<Interaction> {
 
 	private void accept(Interactor interactor) {
 		if (interactor.getPrimaryIdentifier() == null) return;
-		interactors.add(interactor.getPrimaryIdentifier().getIdentifier());
+		interactors.add(interactor.getPrimaryIdentifier().get(0).getIdentifier());
 
 		final List<BiologicalRole> bioRoles = interactor.getBiologicalRoles();
 		if (!bioRoles.isEmpty())

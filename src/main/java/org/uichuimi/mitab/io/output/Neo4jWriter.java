@@ -51,8 +51,8 @@ public class Neo4jWriter implements Acceptor<Interaction>, AutoCloseable {
 
 //		final String aId = getGeneId(a);
 //		final String bId = getGeneId(b);
-		final String aId = a.getPrimaryIdentifier().getIdentifier();
-		final String bId = b.getPrimaryIdentifier().getIdentifier();
+		final String aId = a.getPrimaryIdentifier().get(0).getIdentifier();
+		final String bId = b.getPrimaryIdentifier().get(0).getIdentifier();
 		if (aId == null) return;
 		if (bId == null) return;
 		if (aId.equals(bId)) return;

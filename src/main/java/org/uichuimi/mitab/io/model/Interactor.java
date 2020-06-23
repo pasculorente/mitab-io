@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Interactor {
 
-	private Identifier primaryIdentifier;
+	private List<Identifier> primaryIdentifier = Collections.emptyList();
 	private List<Identifier> alternativeIdentifiers = Collections.emptyList();
 	private List<Alias> aliases = Collections.emptyList();
 	private List<Organism> organisms = Collections.emptyList();
@@ -38,12 +38,13 @@ public class Interactor {
 	 * </dl>
 	 * <p>
 	 * Ex: uniprotkb:P12346
+	 * @return
 	 */
-	public Identifier getPrimaryIdentifier() {
+	public List<Identifier> getPrimaryIdentifier() {
 		return primaryIdentifier;
 	}
 
-	public void setPrimaryIdentifier(Identifier primaryIdentifier) {
+	public void setPrimaryIdentifier(List<Identifier> primaryIdentifier) {
 		this.primaryIdentifier = primaryIdentifier;
 	}
 

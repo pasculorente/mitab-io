@@ -78,8 +78,8 @@ public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 			} else fields.add(interaction.getConfidenceScores().get(0).getValue());
 			final Interactor a = interaction.getInteractorA();
 			final Interactor b = interaction.getInteractorB().getPrimaryIdentifier() == null ? a : interaction.getInteractorB();
-			fields.add(a.getPrimaryIdentifier().getIdentifier());
-			fields.add(b.getPrimaryIdentifier().getIdentifier());
+			fields.add(a.getPrimaryIdentifier().get(0).getIdentifier());
+			fields.add(b.getPrimaryIdentifier().get(0).getIdentifier());
 
 			if (a.getBiologicalRoles().isEmpty()) fields.add("");
 			else fields.add(a.getBiologicalRoles().get(0).getIdentifier());

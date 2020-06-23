@@ -3,6 +3,8 @@ package org.uichuimi.mitab.io.input;
 import org.uichuimi.mitab.io.model.Date;
 import org.uichuimi.mitab.io.model.*;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -18,15 +20,11 @@ public class PsiInteractionParser {
 
 	private static final List<Column> COLUMNS = List.of(
 			new Column("ID(s) interactor A",
-					(interaction, fields) -> interaction.getInteractorA().setPrimaryIdentifier(fields.isEmpty() ? null : new Identifier(fields.get(0))),
-					interaction -> interaction.getInteractorA().getPrimaryIdentifier() == null
-							? Collections.emptyList()
-							: List.of(interaction.getInteractorA().getPrimaryIdentifier())),
+					(interaction, fields) -> interaction.getInteractorA().setPrimaryIdentifier(transform(Identifier.class, fields)),
+					interaction -> interaction.getInteractorA().getPrimaryIdentifier()),
 			new Column("ID(s) interactor B",
-					(interaction, fields) -> interaction.getInteractorB().setPrimaryIdentifier(fields.isEmpty() ? null : new Identifier(fields.get(0))),
-					interaction -> interaction.getInteractorB().getPrimaryIdentifier() == null
-							? Collections.emptyList()
-							: List.of(interaction.getInteractorB().getPrimaryIdentifier())),
+					(interaction, fields) -> interaction.getInteractorB().setPrimaryIdentifier(transform(Identifier.class, fields)),
+					interaction -> interaction.getInteractorB().getPrimaryIdentifier()),
 			new Column("Alt. ID(s) interactor A",
 					((interaction, fields) -> interaction.getInteractorA().setAlternativeIdentifiers(fields.stream().map(Identifier::new).collect(Collectors.toList()))),
 					interaction -> interaction.getInteractorA().getAlternativeIdentifiers()),
@@ -167,6 +165,22 @@ public class PsiInteractionParser {
 					interaction -> List.of(interaction.getCausalStatement()))
 
 	);
+	
+	private static <T extends Field> List<T> transform(Class<T> target, List<Field> fields) {
+		final Constructor<T> constructor;
+		try {
+			constructor = target.getDeclaredConstructor(Field.class);
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+		List<T> list = new ArrayList<>();
+		try {
+			for (Field field : fields) list.add(constructor.newInstance(field));
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+		return list;
+	}
 
 	/**
 	 * Map containing single instances for every {@link PsiMitabVersion}. Instances are created only

@@ -9,6 +9,7 @@ import org.uichuimi.mitab.io.model.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.List;
 
 public class InteractionWriterTest {
@@ -41,8 +42,8 @@ public class InteractionWriterTest {
 		final Interactor a = new Interactor();
 		final Interactor b = new Interactor();
 		final Interaction interaction = new Interaction(a, b);
-		a.setPrimaryIdentifier(new Identifier("uniprotkb", "P49418"));
-		b.setPrimaryIdentifier(new Identifier("uniprotkb", "O43426"));
+		a.setPrimaryIdentifier(Collections.singletonList(new Identifier("uniprotkb", "P49418")));
+		b.setPrimaryIdentifier(Collections.singletonList(new Identifier("uniprotkb", "O43426")));
 		a.setAlternativeIdentifiers(List.of(new Identifier("intact", "EBI-7121510"), new Identifier("intact", "MINT-109264")));
 		b.setAlternativeIdentifiers(List.of(new Identifier("intact", "EBI-2821539")));
 		a.setAliases(List.of(new Alias("psi-mi", "amph_human", "display_long"), new Alias("uniprotkb", "AMPH", "gene name")));
