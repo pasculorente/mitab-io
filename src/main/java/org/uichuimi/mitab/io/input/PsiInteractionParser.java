@@ -266,6 +266,7 @@ public class PsiInteractionParser {
 	 * is returned
 	 */
 	final List<Field> parseField(String field) {
+		field = field.strip();
 		if (field.equals("-") || field.isEmpty()) return Collections.emptyList();
 		final List<Field> fields = new LinkedList<>();
 		final List<String> strings = splitSafe(field, FIELD_SEPARATOR);
