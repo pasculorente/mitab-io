@@ -475,8 +475,8 @@ public class Interaction {
 	@Override
 	public String toString() {
 		return "Interaction{" +
-				"identifier=" + identifiers.get(0).getIdentifier() +
-				", interactorA=" + interactorA.getPrimaryIdentifier().getIdentifier() +
+				"identifier=" + (identifiers.size() > 0 ? identifiers.get(0).getIdentifier() : "NA") +
+				", interactorA=" + interactorA.getPrimaryIdentifier().get(0).getIdentifier() +
 //				", interactorB=" + (interactorB == null ? "null" : interactorB.getPrimaryIdentifier().getIdentifier()) +
 				'}';
 	}
