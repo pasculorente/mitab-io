@@ -101,9 +101,11 @@ public class Selector {
 		return map;
 	}
 
+
 	private final Function<Interaction, List<? extends Field>> fieldsExtractor;
 	private final Function<List<? extends Field>, List<? extends Field>> rangeExtractor;
 	private final Function<Field, String> valueExtractor;
+	private final String columnName;
 
 	/**
 	 * Selects a column from Interaction, and allows to specify which values to extract
@@ -141,6 +143,7 @@ public class Selector {
 		this.fieldsExtractor = createFieldsExtractor(column, interactor);
 		this.valueExtractor = createPropertyExtractor(gettype(column, interactor), property);
 		this.rangeExtractor = createRangeExtractor(from, ranged, to);
+		this.columnName = interactor == null ? column : interactor + "." + column;
 	}
 
 	public String select(Interaction interaction) {
@@ -217,5 +220,9 @@ public class Selector {
 		final List<String> rtn = new ArrayList<>();
 		for (Field field : fields) rtn.add(valueExtractor.apply(field));
 		return rtn;
+	}
+
+	public String getColumnName() {
+		return columnName;
 	}
 }

@@ -14,8 +14,9 @@ public class FilterTest {
 
 		final InputStream resource = getClass().getResourceAsStream("/input/sample-interactions.mitab27");
 		try (final InteractionReader reader = new InteractionReader(resource)){
-			for (Interaction interaction : reader)
-				System.out.println(exportColumn.select(interaction));
+			for (Interaction interaction : reader) {
+				final String select = exportColumn.select(interaction);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -41,8 +41,12 @@ public class Main implements Callable<Integer> {
 	@Option(names = {"--neo4j"}, description = "Neo4j directory")
 	private File neo4j;
 
-	@Option(names = {"--select"}, description = "Specifies one or more columns to export", arity = "*")
+	@Option(names = {"--select"}, arity = "*", split = ",",
+			description = "Specifies one or more columns to export")
 	private List<String> selection;
+	
+	@Option(names = {"--stats"}, description = "Show stats at the end of the process. By default")
+	private boolean stats;
 
 	private long start;
 
@@ -64,12 +68,12 @@ public class Main implements Callable<Integer> {
 		final OutputStream out = output == null ? System.out : FileUtils.getOutputStream(output);
 
 		final List<Acceptor<Interaction>> consumers = new ArrayList<>();
-		final Stats stats = new Stats(console);
-		final Progress progress = new Progress(console);
-		consumers.add(stats);
-		consumers.add(progress);
+		if (stats)
+			consumers.add(new Stats(console));
+		if (neo4j != null)
+			consumers.add(new Neo4jWriter(neo4j));
+		consumers.add(new Progress(console));
 		consumers.add(new TsvWriter(out, selectors));
-		if (neo4j != null) consumers.add(new Neo4jWriter(neo4j));
 
 		try (InteractionReader reader = new InteractionReader(in)) {
 			consumers.forEach(Acceptor::start);

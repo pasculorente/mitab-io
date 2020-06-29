@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 
@@ -58,7 +59,7 @@ public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 
 	public TsvWriter(PrintStream output, List<Selector> selectors) {
 		this.output = output;
-		this.selectors = selectors;
+		this.selectors = selectors == null ? DEFAULT_COLUMNS : selectors;
 	}
 	
 	public TsvWriter(PrintStream output) {
@@ -81,7 +82,7 @@ public class TsvWriter implements Acceptor<Interaction>, AutoCloseable {
 	}
 
 	private void writeHeader() {
-		output.println(String.join(SEPARATOR, HEADERS));
+		output.println(selectors.stream().map(Selector::getColumnName).collect(Collectors.joining(SEPARATOR)));
 	}
 
 	private void writeWithHeader(Interaction interaction) {
