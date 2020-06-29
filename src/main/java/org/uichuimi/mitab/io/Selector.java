@@ -143,7 +143,7 @@ public class Selector {
 		this.rangeExtractor = createRangeExtractor(from, ranged, to);
 	}
 
-	String select(Interaction interaction) {
+	public String select(Interaction interaction) {
 		List<? extends Field> fields = fieldsExtractor.apply(interaction);
 		fields = rangeExtractor.apply(fields);
 		final List<String> values = extractValues(fields);

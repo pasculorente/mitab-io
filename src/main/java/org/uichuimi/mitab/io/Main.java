@@ -4,6 +4,7 @@ import org.uichuimi.mitab.io.consumer.Acceptor;
 import org.uichuimi.mitab.io.consumer.Progress;
 import org.uichuimi.mitab.io.consumer.Stats;
 import org.uichuimi.mitab.io.input.InteractionReader;
+import org.uichuimi.mitab.io.input.SelectParser;
 import org.uichuimi.mitab.io.model.Interaction;
 import org.uichuimi.mitab.io.output.Neo4jWriter;
 import org.uichuimi.mitab.io.output.TsvWriter;
@@ -25,9 +26,6 @@ import static picocli.CommandLine.Option;
 		description = "umpteenth package with tools to work with PSI MITAB files")
 public class Main implements Callable<Integer> {
 
-	private static final List<Selector> DEFAULT_COLUMNS = List.of(
-//			new ExportColumn()
-	);
 	@Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
 	boolean usageHelpRequested;
 
@@ -43,8 +41,8 @@ public class Main implements Callable<Integer> {
 	@Option(names = {"--neo4j"}, description = "Neo4j directory")
 	private File neo4j;
 
-	@Option(names = {"--column"}, description = "Choose a column to export", arity = "*")
-	private List<String> columnSpecs;
+	@Option(names = {"--select"}, description = "Specifies one or more columns to export", arity = "*")
+	private List<String> selection;
 
 	private long start;
 
@@ -60,7 +58,7 @@ public class Main implements Callable<Integer> {
 			console.println("output: " + output);
 		}
 
-		final List<Selector> columns = parseColumns();
+		final List<Selector> selectors = parseColumns();
 
 		final InputStream in = input == null ? System.in : FileUtils.getInputStream(input);
 		final OutputStream out = output == null ? System.out : FileUtils.getOutputStream(output);
@@ -70,7 +68,7 @@ public class Main implements Callable<Integer> {
 		final Progress progress = new Progress(console);
 		consumers.add(stats);
 		consumers.add(progress);
-		consumers.add(new TsvWriter(out));
+		consumers.add(new TsvWriter(out, selectors));
 		if (neo4j != null) consumers.add(new Neo4jWriter(neo4j));
 
 		try (InteractionReader reader = new InteractionReader(in)) {
@@ -85,9 +83,9 @@ public class Main implements Callable<Integer> {
 	}
 
 	private List<Selector> parseColumns() {
-		if (columnSpecs == null || columnSpecs.isEmpty()) return DEFAULT_COLUMNS;
+		if (selection == null || selection.isEmpty()) return null;
 		final List<Selector> exportColumns = new ArrayList<>();
-		for (String column : columnSpecs)
+		for (String column : selection)
 			exportColumns.add(parseColumn(column));
 		return exportColumns;
 	}
@@ -95,14 +93,7 @@ public class Main implements Callable<Integer> {
 	private Selector parseColumn(String configuration) {
 		if (configuration.isBlank())
 			throw new IllegalArgumentException("column configuration must not be empty");
-		
-		final String[] fields = configuration.split(":");
-		final String name = fields[0].toLowerCase();
-		
-		if (fields.length > 1) {
-			
-		}
-			return null;
+		return SelectParser.parse(configuration);
 	}
 
 
