@@ -15,11 +15,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.*;
 import java.util.function.Function;
 
-public class ExportColumn {
-
-	private final Function<Interaction, List<? extends Field>> fieldsExtractor;
-	private final Function<List<? extends Field>, List<? extends Field>> rangeExtractor;
-	private final Function<Field, String> valueExtractor;
+/**
+ * Extracts one datum from an interaction.
+ */
+public class Selector {
 
 	private final static Map<String, Class<? extends Field>> interactionColumnTypes;
 	private final static Map<String, Class<? extends Field>> interactorColumnTypes;
@@ -102,10 +101,53 @@ public class ExportColumn {
 		return map;
 	}
 
-	public ExportColumn(String interactor, String column, String property, Integer from, Boolean ranged, Integer to) {
+	private final Function<Interaction, List<? extends Field>> fieldsExtractor;
+	private final Function<List<? extends Field>, List<? extends Field>> rangeExtractor;
+	private final Function<Field, String> valueExtractor;
+
+	/**
+	 * Selects a column from Interaction, and allows to specify which values to extract
+	 * from the list of fields.
+	 *
+	 * @param interactor if <em>a</em> or <em>b</em>, column will be selected
+	 *                   from this interactor. If null, column will be selected
+	 *                   from the interaction.
+	 * @param column     name of the column, must match with one of the annotations
+	 *                   in {@link Interactor} or {@link Interaction}.
+	 * @param property   once a column is selected, you can specify to extract
+	 *                   the whole fields, or just one of the 3 properties
+	 *                   (xref, value or description). Per field aliases can be
+	 *                   specified: type, checksum, etc.
+	 * @param from       once a column is selected, a range for the list of fields
+	 *                   in there can be specified. <em>from</em> is the starting
+	 *                   field and can be <em>null</em> to indicate 0, a natural
+	 *                   0-index number, to indicate a position or a negative int,
+	 *                   to index from the end of the list.
+	 * @param ranged     if true, a range is created using from and to, when they
+	 *                   are null, from becomes the beginning of the list and to
+	 *                   the last item.
+	 * @param to         last position to take from the list.
+	 */
+	public Selector(String interactor, String column, String property, Integer from, boolean ranged, Integer to) {
+		if (interactor == null) {
+			if (!interactionIndex.containsKey(column))
+				throw new IllegalArgumentException("Interaction class does not contain column '"
+						+ column + "'");
+		} else {
+			if (!interactorIndex.containsKey(column))
+				throw new IllegalArgumentException("Interactor class does not contain column '"
+						+ column + "'");
+		}
 		this.fieldsExtractor = createFieldsExtractor(column, interactor);
 		this.valueExtractor = createPropertyExtractor(gettype(column, interactor), property);
 		this.rangeExtractor = createRangeExtractor(from, ranged, to);
+	}
+
+	String select(Interaction interaction) {
+		List<? extends Field> fields = fieldsExtractor.apply(interaction);
+		fields = rangeExtractor.apply(fields);
+		final List<String> values = extractValues(fields);
+		return String.join("|", values);
 	}
 
 	private Class<? extends Field> gettype(String column, String interactor) {
@@ -158,25 +200,17 @@ public class ExportColumn {
 			case "value" -> function = Field::getValue;
 			case "description" -> function = Field::getDescription;
 			default -> {
-				if (!propertyIndex.get(tClass).containsKey(property))
-					throw new IllegalArgumentException(tClass.getSimpleName()
-							+ " does not have " + property + ": " 
-							+ propertyIndex.get(tClass).keySet());
+				if (!propertyIndex.get(tClass).containsKey(property)) {
+					final Set<String> keySet = new TreeSet<>(propertyIndex.get(tClass).keySet());
+					keySet.addAll(List.of("xref", "value", "description"));
+					final String message = String.format("%s does not contain property '%s': %s", 
+							tClass.getSimpleName(), property, keySet);
+					throw new IllegalArgumentException(message);
+				}
 				function = propertyIndex.get(tClass).get(property);
 			}
 		}
 		return function;
-	}
-
-
-	String get(Interaction interaction) {
-		// 1: get a list of fields, using name and interactor
-		List<? extends Field> fields = fieldsExtractor.apply(interaction);
-		// 2: get first n elements
-		fields = rangeExtractor.apply(fields);
-		// 3: get value from each element
-		List<String> values = extractValues(fields);
-		return String.join("|", values);
 	}
 
 	private List<String> extractValues(List<? extends Field> fields) {

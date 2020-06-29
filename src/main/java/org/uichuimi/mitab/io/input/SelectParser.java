@@ -1,6 +1,6 @@
 package org.uichuimi.mitab.io.input;
 
-import org.uichuimi.mitab.io.ExportColumn;
+import org.uichuimi.mitab.io.Selector;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ public class SelectParser {
 	private SelectParser() {
 	}
 
-	public static ExportColumn parse(String text) {
+	public static Selector parse(String text) {
 		final Matcher matcher = PATTERN.matcher(text);
 		if (!matcher.matches())
 			throw new IllegalArgumentException("Selector '" + text + "' is not valid");
@@ -22,7 +22,7 @@ public class SelectParser {
 		final String range = matcher.group("range");
 		final Integer from;
 		final Integer to;
-		final Boolean ranged;
+		final boolean ranged;
 		if (range != null) {
 			final Matcher rangeMatcher = RANGE.matcher(range);
 			if (!rangeMatcher.matches()) 
@@ -34,8 +34,8 @@ public class SelectParser {
 			ranged = matcher.group("ranged") != null;
 		} else {
 			from = to = null;
-			ranged = null;
+			ranged = false;
 		}
-		return new ExportColumn(interactor, column, property, from, ranged, to);
+		return new Selector(interactor, column, property, from, ranged, to);
 	}
 }

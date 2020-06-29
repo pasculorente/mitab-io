@@ -25,7 +25,7 @@ import static picocli.CommandLine.Option;
 		description = "umpteenth package with tools to work with PSI MITAB files")
 public class Main implements Callable<Integer> {
 
-	private static final List<ExportColumn> DEFAULT_COLUMNS = List.of(
+	private static final List<Selector> DEFAULT_COLUMNS = List.of(
 //			new ExportColumn()
 	);
 	@Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
@@ -60,7 +60,7 @@ public class Main implements Callable<Integer> {
 			console.println("output: " + output);
 		}
 
-		final List<ExportColumn> columns = parseColumns();
+		final List<Selector> columns = parseColumns();
 
 		final InputStream in = input == null ? System.in : FileUtils.getInputStream(input);
 		final OutputStream out = output == null ? System.out : FileUtils.getOutputStream(output);
@@ -84,15 +84,15 @@ public class Main implements Callable<Integer> {
 		return 0;
 	}
 
-	private List<ExportColumn> parseColumns() {
+	private List<Selector> parseColumns() {
 		if (columnSpecs == null || columnSpecs.isEmpty()) return DEFAULT_COLUMNS;
-		final List<ExportColumn> exportColumns = new ArrayList<>();
+		final List<Selector> exportColumns = new ArrayList<>();
 		for (String column : columnSpecs)
 			exportColumns.add(parseColumn(column));
 		return exportColumns;
 	}
 
-	private ExportColumn parseColumn(String configuration) {
+	private Selector parseColumn(String configuration) {
 		if (configuration.isBlank())
 			throw new IllegalArgumentException("column configuration must not be empty");
 		
