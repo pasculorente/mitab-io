@@ -4,22 +4,35 @@ import java.util.Collections;
 import java.util.List;
 
 public class Interactor {
-
+	
+	@PsiColumn({"identifier"})
 	private List<Identifier> primaryIdentifier = Collections.emptyList();
+	@PsiColumn({"alternatives", "alternative"})
 	private List<Identifier> alternativeIdentifiers = Collections.emptyList();
+	@PsiColumn({"alias", "aliases"})
 	private List<Alias> aliases = Collections.emptyList();
+	@PsiColumn({"organism", "organisms"})
 	private List<Organism> organisms = Collections.emptyList();
+	@PsiColumn({"biologicalRole", "biorole"})
 	private List<BiologicalRole> biologicalRoles = Collections.emptyList();
+	@PsiColumn({"experimentalRole", "exprole"})
 	private List<ExperimentalRole> experimentalRoles = Collections.emptyList();
+	@PsiColumn({"type", "types"})
 	private List<Type> types = Collections.emptyList();
+	@PsiColumn({"xref", "crossReference", "crossReferences"})
 	private List<CrossReference> crossReferences = Collections.emptyList();
+	@PsiColumn({"annotation", "annotations"})
 	private List<Annotation> annotations = Collections.emptyList();
+	@PsiColumn({"checksum"})
 	private List<Checksum> checksums = Collections.emptyList();
+	@PsiColumn({"feature", "features"})
 	private List<Feature> features = Collections.emptyList();
+	@PsiColumn({"stoichiometry"})
 	private List<Stoichiometry> stoichiometries = Collections.emptyList();
+	@PsiColumn({"identificationMethod", "method"})
 	private List<IdentificationMethod> identificationMethods = Collections.emptyList();
+	@PsiColumn({"biologicalEffect", "effect"})
 	private List<BiologicalEffect> biologicalEffects = Collections.emptyList();
-
 
 	/**
 	 * Unique identifier for interactor. Even though identifiers from multiple databases can be

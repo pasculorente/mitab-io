@@ -25,26 +25,31 @@ import static picocli.CommandLine.Option;
 		description = "umpteenth package with tools to work with PSI MITAB files")
 public class Main implements Callable<Integer> {
 
+	private static final List<ExportColumn> DEFAULT_COLUMNS = List.of(
+//			new ExportColumn()
+	);
 	@Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
 	boolean usageHelpRequested;
 
 	@Option(names = {"-v", "--verbose"})
 	private boolean verbose;
 
-	@Option(names = {"-i", "--input"})
+	@Option(names = {"-i", "--input"}, description = "Input file (PSI-MI TAB format)")
 	private File input;
 
-	@Option(names = {"-o", "--output"})
+	@Option(names = {"-o", "--output"}, description = "Output file (tsv)")
 	private File output;
 
-	@Option(names = {"--neo4j"})
+	@Option(names = {"--neo4j"}, description = "Neo4j directory")
 	private File neo4j;
+
+	@Option(names = {"--column"}, description = "Choose a column to export", arity = "*")
+	private List<String> columnSpecs;
 
 	private long start;
 
 	public static void main(String[] args) {
-		int exitCode = new CommandLine(new Main()).execute(args);
-		System.exit(exitCode);
+		System.exit(new CommandLine(new Main()).execute(args));
 	}
 
 	@Override
@@ -54,6 +59,8 @@ public class Main implements Callable<Integer> {
 			console.println("input : " + input);
 			console.println("output: " + output);
 		}
+
+		final List<ExportColumn> columns = parseColumns();
 
 		final InputStream in = input == null ? System.in : FileUtils.getInputStream(input);
 		final OutputStream out = output == null ? System.out : FileUtils.getOutputStream(output);
@@ -75,6 +82,27 @@ public class Main implements Callable<Integer> {
 			consumers.forEach(Acceptor::close);
 		}
 		return 0;
+	}
+
+	private List<ExportColumn> parseColumns() {
+		if (columnSpecs == null || columnSpecs.isEmpty()) return DEFAULT_COLUMNS;
+		final List<ExportColumn> exportColumns = new ArrayList<>();
+		for (String column : columnSpecs)
+			exportColumns.add(parseColumn(column));
+		return exportColumns;
+	}
+
+	private ExportColumn parseColumn(String configuration) {
+		if (configuration.isBlank())
+			throw new IllegalArgumentException("column configuration must not be empty");
+		
+		final String[] fields = configuration.split(":");
+		final String name = fields[0].toLowerCase();
+		
+		if (fields.length > 1) {
+			
+		}
+			return null;
 	}
 
 

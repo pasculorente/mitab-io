@@ -152,20 +152,14 @@ public class PsiInteractionParser {
 					(interaction, fields) -> interaction.getInteractorB().setBiologicalEffects(fields.stream().map(BiologicalEffect::new).collect(Collectors.toList())),
 					interaction -> interaction.getInteractorB().getBiologicalEffects()),
 			new Column("Causal regulatory mechanism",
-					(interaction, fields) -> {
-						if (fields != null && !fields.isEmpty())
-							interaction.setCausalRegulatoryMechanism(new CausalRegulatoryMechanism(fields.get(0)));
-					},
-					interaction -> List.of(interaction.getCausalRegulatoryMechanism())),
+					(interaction, fields) -> interaction.setCausalRegulatoryMechanism(transform(CausalRegulatoryMechanism.class, fields)),
+					Interaction::getCausalRegulatoryMechanism),
 			new Column("Causal statement",
-					(interaction, fields) -> {
-						if (fields != null && !fields.isEmpty())
-							interaction.setCausalStatement(new CausalStatement(fields.get(0)));
-					},
-					interaction -> List.of(interaction.getCausalStatement()))
+					(interaction, fields) -> interaction.setCausalStatement(transform(CausalStatement.class, fields)),
+					Interaction::getCausalStatement)
 
 	);
-	
+
 	private static <T extends Field> List<T> transform(Class<T> target, List<Field> fields) {
 		final Constructor<T> constructor;
 		try {
@@ -289,7 +283,7 @@ public class PsiInteractionParser {
 				.collect(Collectors.joining(FIELD_SEPARATOR));
 	}
 
-	private String toString(Field field) {
+	public String toString(Field field) {
 		if (field.getValue() == null) {
 			return field.getXref();
 		} else {

@@ -11,24 +11,42 @@ public class Interaction {
 
 	private Interactor interactorA = new Interactor();
 	private Interactor interactorB = new Interactor();
+	@PsiColumn({"author", "authors"})
 	private List<Author> authors = Collections.emptyList();
+	@PsiColumn({"method", "methods"})
 	private List<DetectionMethod> detectionMethods = Collections.emptyList();
+	@PsiColumn({"publication", "publications"})
 	private List<Publication> publications = Collections.emptyList();
+	@PsiColumn({"type", "types"})
 	private List<Type> types = Collections.emptyList();
+	@PsiColumn({"database", "databases"})
 	private List<Database> databases = Collections.emptyList();
+	@PsiColumn({"identifier", "identifiers"})
 	private List<Identifier> identifiers = Collections.emptyList();
+	@PsiColumn({"crossRef", "xref", "crossReferences"})
 	private List<CrossReference> crossReferences = Collections.emptyList();
+	@PsiColumn({"annotation", "annotations"})
 	private List<Annotation> annotations = Collections.emptyList();
+	@PsiColumn({"organism"})
 	private List<Organism> organism = Collections.emptyList();
+	@PsiColumn({"score", "confidence"})
 	private List<ConfidenceScore> confidenceScores = Collections.emptyList();
+	@PsiColumn({"expansion", "complexExpansion"})
 	private List<ComplexExpansion> complexExpansion = Collections.emptyList();
+	@PsiColumn({"parameter", "parameters"})
 	private List<Parameter> parameters = Collections.emptyList();
+	@PsiColumn({"creation"})
 	private Date creation;
+	@PsiColumn({"update"})
 	private Date update;
+	@PsiColumn({"checksum"})
 	private List<Checksum> checksums = Collections.emptyList();
+	@PsiColumn({"negative"})
 	private Negative negative;
-	private CausalRegulatoryMechanism causalRegulatoryMechanism;
-	private CausalStatement causalStatement;
+	@PsiColumn({"causalRegulatoryMechanism", "regulatoryMechanism", "mechanism"})
+	private List<CausalRegulatoryMechanism> causalRegulatoryMechanism;
+	@PsiColumn({"causalStatement", "statement"})
+	private List<CausalStatement> causalStatement;
 
 	public Interaction(Interactor interactorA, Interactor interactorB) {
 		this.interactorA = interactorA;
@@ -347,6 +365,7 @@ public class Interaction {
 	 * <dd><strong>date</strong>: as yyyy/mm/dd</dd>
 	 * </dl>
 	 * Ex:2010/10/17
+	 *
 	 * @return
 	 */
 	public Date getCreation() {
@@ -367,6 +386,7 @@ public class Interaction {
 	 * <dd><strong>date</strong>: as yyyy/mm/dd</dd>
 	 * </dl>
 	 * Ex:2011/12/13
+	 *
 	 * @return
 	 */
 	public Date getUpdate() {
@@ -411,6 +431,7 @@ public class Interaction {
 	 * </dl>
 	 * <p>
 	 * Ex: true
+	 *
 	 * @return
 	 */
 	public Negative getNegative() {
@@ -440,11 +461,11 @@ public class Interaction {
 	 * <p>
 	 * Ex: psi-mi:"MI:2247"(transcriptional regulation)
 	 */
-	public CausalRegulatoryMechanism getCausalRegulatoryMechanism() {
+	public List<CausalRegulatoryMechanism> getCausalRegulatoryMechanism() {
 		return causalRegulatoryMechanism;
 	}
 
-	public void setCausalRegulatoryMechanism(CausalRegulatoryMechanism causalRegulatoryMechanism) {
+	public void setCausalRegulatoryMechanism(List<CausalRegulatoryMechanism> causalRegulatoryMechanism) {
 		this.causalRegulatoryMechanism = causalRegulatoryMechanism;
 	}
 
@@ -463,12 +484,14 @@ public class Interaction {
 	 * </dl>
 	 * <p>
 	 * Ex: psi-mi:"MI:2240"(down regulates)
+	 *
+	 * @param causalStatement
 	 */
-	public void setCausalStatement(CausalStatement causalStatement) {
+	public void setCausalStatement(List<CausalStatement> causalStatement) {
 		this.causalStatement = causalStatement;
 	}
 
-	public CausalStatement getCausalStatement() {
+	public List<CausalStatement> getCausalStatement() {
 		return causalStatement;
 	}
 
