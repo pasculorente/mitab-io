@@ -23,7 +23,26 @@ import static picocli.CommandLine.Option;
 
 @Command(name = "mitab",
 		version = "mitab version 1.0",
-		description = "umpteenth package with tools to work with PSI MITAB files")
+		description = "umpteenth package with tools to work with PSI MITAB files",
+		usageHelpAutoWidth = true,
+		footer = "@|bold,underline SELECTION|@\n" +
+				"<selector> = [<interactor>.]<column>[.<property>][<range>]\n" +
+				"<interactor> = a|b\n" +
+				"<column>   = method|author|publication|type|\n" +
+				"             database|identifier|score|expansion|\n" +
+				"             xref|annotation|organism|parameter|\n" +
+				"             creation|update|checksum|negative|\n" +
+				"             regulatory|statement\n" +
+				"             alternative|alias|biorole|exprole|\n" +
+				"             stoichiometry|effect\n" +
+				"<property> = xref|value|description|database|\n" +
+				"             identifier|name|text|author|type|\n" +
+				"             score|topic|date|method|checksum|\n" +
+				"             negative|taxid|range|stoichiometry\n" +
+				"<range>    = \\[<start>[:[-]<end>]\\]\n" +
+				"<start>    = integer\n" +
+				"<end>      = integer\n"
+)
 public class Main implements Callable<Integer> {
 
 	@Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
@@ -42,10 +61,14 @@ public class Main implements Callable<Integer> {
 	private File neo4j;
 
 	@Option(names = {"--select"}, arity = "*", split = ",",
-			description = "Specifies one or more columns to export")
-	private List<String> selection;
-	
-	@Option(names = {"--stats"}, description = "Show stats at the end of the process. By default")
+			description = "Specifies one or more columns to export.\n" +
+					"Example: identifier.value,a.identifier.value. See SELECTION.")
+	private List<String> selector;
+
+	@Option(names = {"--stats"}, defaultValue = "true",
+			description = "Show stats at the end of the process. Stats are" +
+					" printed into console (stdout if output is a file or stderr " +
+					"if output is stdout)")
 	private boolean stats;
 
 	private long start;
@@ -87,9 +110,9 @@ public class Main implements Callable<Integer> {
 	}
 
 	private List<Selector> parseColumns() {
-		if (selection == null || selection.isEmpty()) return null;
+		if (selector == null || selector.isEmpty()) return null;
 		final List<Selector> exportColumns = new ArrayList<>();
-		for (String column : selection)
+		for (String column : selector)
 			exportColumns.add(parseColumn(column));
 		return exportColumns;
 	}

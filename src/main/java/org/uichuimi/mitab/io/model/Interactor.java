@@ -51,7 +51,7 @@ public class Interactor {
 	 * </dl>
 	 * <p>
 	 * Ex: uniprotkb:P12346
-	 * @return
+	 * @return list of primary identifiers
 	 */
 	public List<Identifier> getPrimaryIdentifier() {
 		return primaryIdentifier;

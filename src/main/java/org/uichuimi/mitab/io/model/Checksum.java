@@ -2,8 +2,8 @@ package org.uichuimi.mitab.io.model;
 
 public class Checksum extends Field {
 
-	public Checksum(String method, String cheksum) {
-		super(method, cheksum);
+	public Checksum(String method, String checksum) {
+		super(method, checksum);
 	}
 
 	public Checksum(Field field) {

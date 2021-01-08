@@ -19,7 +19,7 @@ public class Neo4jWriterTest {
 		final InputStream resource = getClass().getResourceAsStream("/input/sample-interactions.mitab27");
 		final File path = Files.createTempDirectory("output-neo4j").toFile();
 		try (InteractionReader reader = new InteractionReader(resource);
-		     Neo4jWriter writer = new Neo4jWriter(path);) {
+		     Neo4jWriter writer = new Neo4jWriter(path)) {
 			reader.forEach(writer);
 		}
 		String actual = IOUtils.toString(new GZIPInputStream(getClass().getResourceAsStream("/output/nodes.tsv.gz")), Charset.defaultCharset());

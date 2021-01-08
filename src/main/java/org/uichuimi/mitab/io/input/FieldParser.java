@@ -27,7 +27,7 @@ class FieldParser {
 	 * </pre></code>
 	 *
 	 * @param string input string to parse, normally taken from a PSI MITAB file
-	 * @return the Field represented by srting
+	 * @return the Field represented by string
 	 * @throws IllegalArgumentException if string is null or empty or does not match MITAB syntax.
 	 */
 	static Field parse(String string) throws IllegalArgumentException {

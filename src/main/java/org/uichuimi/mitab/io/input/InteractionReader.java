@@ -16,6 +16,7 @@ public class InteractionReader implements AutoCloseable, Iterable<Interaction>, 
 	private final BufferedReader reader;
 	private final PsiInteractionParser parser;
 	private Interaction next;
+	private long line = 0;
 
 	public InteractionReader(File file) throws IOException {
 		this(getInputStream(file));
@@ -57,7 +58,12 @@ public class InteractionReader implements AutoCloseable, Iterable<Interaction>, 
 		try {
 			final String line = reader.readLine();
 			if (line == null) return false;
-			next = parser.toInteraction(line);
+			try {
+				next = parser.toInteraction(line);
+				this.line += 1;
+			} catch (RuntimeException ex) {
+				throw new RuntimeException("At line " + this.line, ex);
+			}
 			return true;
 		} catch (IOException e) {
 			return false;

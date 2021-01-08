@@ -1,7 +1,7 @@
 # MITAB I/O
 
 Small library to work with, i.e. _parse_, PSI-MI TAB files (https://psicquic.github.io/),
-such us intact.txt.gz, or BIOGRID-ALL-3.5.185.mitab.zip).
+such us intact.txt.gz, or BIOGRID-ALL-3.5.185.mitab.zip.
 
 
 > This is NOT the official PSI-MI TAB library, neither pretends to replace it. To get 
@@ -38,7 +38,7 @@ intact:EBI-7121765	uniprotkb:P49418	intact:MINT-8094691	intact:EBI-7121510|unipr
 uniprotkb:P49418	intact:EBI-7121785	intact:EBI-7121510|uniprotkb:Q75MK5|uniprotkb:Q75MM3|uniprotkb:A4D1X9|intact:MINT-109264|uniprotkb:O43538|uniprotkb:A4D1X8|uniprotkb:Q75MJ8|uniprotkb:Q8N4G0	intact:MINT-8094718	psi-mi:amph_human(display_long)|uniprotkb:AMPH(gene name)|psi-mi:AMPH(display_short)|uniprotkb:AMPH1(gene name synonym)	psi-mi:hrptrskla(display_short)|psi-mi:EBI-7121785(display_long)	psi-mi:"MI:0084"(phage display)	Cestra et al. (1999)	pubmed:10542231|mint:MINT-5211933	taxid:9606(human)|taxid:9606(Homo sapiens)	taxid:-2(chemical synthesis)|taxid:-2("Chemical synthesis (Chemical synthesis)")	psi-mi:"MI:0407"(direct interaction)	psi-mi:"MI:0471"(MINT)	intact:EBI-7121780|mint:MINT-8094706	intact-miscore:0.44	-	psi-mi:"MI:0499"(unspecified role)	psi-mi:"MI:0499"(unspecified role)	psi-mi:"MI:0498"(prey)	psi-mi:"MI:0496"(bait)	psi-mi:"MI:0326"(protein)	psi-mi:"MI:0327"(peptide)	reactome:R-HSA-8856828|ensembl:ENST00000325590|ensembl:ENST00000356264|ensembl:ENSG00000078053|ensembl:ENSP00000317441|ensembl:ENSP00000348602|mint:P49418|go:"GO:0030672"(synaptic vesicle membrane)|rcsb pdb:5M61|rcsb pdb:5M5S|dip:DIP-40729N|go:"GO:0005543"(phospholipid binding)|go:"GO:0031256"(leading edge membrane)|go:"GO:0005886"(plasma membrane)|go:"GO:0048488"(synaptic vesicle endocytosis)|interpro:IPR035470|interpro:IPR036028|go:"GO:0005829"(cytosol)|go:"GO:0061024"(membrane organization)|go:"GO:0015629"(actin cytoskeleton)|refseq:NP_001626.1|interpro:IPR003005(Amphiphysin)|rcsb pdb:4ATM|go:"GO:0007268"(chemical synaptic transmission)|interpro:IPR003017(Amphiphysin, isoform 1)|refseq:NP_647477.1|rcsb pdb:3SOG|rcsb pdb:1UTC|interpro:IPR001452(Src homology-3)|rcsb pdb:1KY7|interpro:IPR004148(BAR)|go:"GO:0008021"(synaptic vesicle)|go:"GO:0006897"(endocytosis)|go:"GO:0030054"(cell junction)|interpro:IPR027267|mint:MINT-8094708(identity)	mint:MINT-8094720(identity)	-	function:May participate in mechanisms of regulated exocytosis in synapses and certain endocrine cell types. May control the properties of the membrane associated cytoskeleton|comment:mint|comment:homomint|function:Antibodies against AMPH are detected in patients with stiff-man syndrome, a rare disease of the central nervous system characterized by progressive rigidity of the body musculature with superimposed painful spasms	comment:mint|no-uniprot-update:	figure legend:F1 F2|comment:domino|comment:mint	taxid:-1(in vitro)|taxid:-1(In vitro)	-	2001/01/10	2014/10/16	rogid:vrgVrVoYr45cUe4X6L/zBAE1RtU9606	rogid:Q9S7HY0OYKNz5U6ndWhu91PBN5Q-2	intact-crc:84BF0FF8155AE7F8|rigid:XLOVWM25uJw3qiUhKe6tGNH97NE	false	binding-associated region:626-695(MINT-8094709)	-	-	-	psi-mi:"MI:0078"(nucleotide sequence identification)	psi-mi:"MI:0083"(peptide synthesis)
 ```
 
-Each interaction contains 
+Every line contains interaction specific information
 
 Column | Version |    Field    | Arity |         Structure         | Example
 ------ | ------- | ----------- | ----- | ------------------------- | -------
@@ -61,7 +61,7 @@ Column | Version |    Field    | Arity |         Structure         | Example
 45     | MITAB28 | Regulatory  |  0..* | database:identifier(name) | psi-mi:"MI:2247"(transcriptional regulation)
 46     | MITAB28 | Statement   |  0..* | database:identifier(name) | psi-mi:"MI:2240"(down regulates)
 
-and the interactors
+There are also fields to detail interactors information
 
 Columns | Version |    Field      | Arity |         Structure         | Example
 ------- | ------- | ------------- | ----- | ------------------------- | -------
@@ -157,41 +157,44 @@ You can create or modify Interaction objects for later writing:
 ```java
 import org.uichuimi.mitab.io.output.InteractionWriter;
 import org.uichuimi.mitab.io.model.Interactor;
-import org.uichuimi.mitab.io.model.Interaction;import java.io.File;import java.io.FileOutputStream;
+import org.uichuimi.mitab.io.model.Interaction;
 
-class Main { 
-    public static void main(String[] args) {
-        Interactor a = new Interactor();
-        Interactor b = new Interactor();
-        Interaction interaction = new Interaction(a, b);
-        a.setPrimaryIdentifier(new Identifier("uniprotkb", "P49418"));
-        b.setPrimaryIdentifier(new Identifier("uniprotkb", "O43426"));
-        a.setAlternativeIdentifiers(List.of(new Identifier("intact", "EBI-7121510"), new Identifier("intact", "MINT-109264")));
-        b.setAlternativeIdentifiers(List.of(new Identifier("intact", "EBI-2821539")));
-        a.setAliases(List.of(new Alias("psi-mi", "amph_human", "display_long"), new Alias("uniprotkb", "AMPH", "gene name")));
-        b.setAliases(List.of(new Alias("psi-mi", "SYNJ1", "display_short"), new Alias("uniprotkb", "KIAA0910", "gene name synonym")));
-        interaction.setDetectionMethods(List.of(new DetectionMethod("psi-mi", "MI:0084", "phage display")));
-        interaction.setAuthors(List.of(new Author("Cestra et al. (1999)")));
-        interaction.setPublications(List.of(new Publication("pubmed", "10542231"), new Publication("mint", "MINT-5211933")));
-        a.setOrganisms(List.of(new Organism("taxid", "9606", "human"), new Organism("taxid", "9606", "Homo sapiens")));
-        b.setOrganisms(List.of(new Organism("taxid", "9606", "human"), new Organism("taxid", "9606", "Homo sapiens")));
-        interaction.setTypes(List.of(new Type("psi-mi", "MI:0407", "direct interaction")));
-        interaction.setDatabases(List.of(new Database("psi-mi", "MI:0471", "MINT")));
-        interaction.setIdentifiers(List.of(new Identifier("intact", "EBI-7121552")));
-        interaction.setConfidenceScores(List.of(new ConfidenceScore("intact-miscore", "0.56")));
-        a.setBiologicalRoles(List.of(new BiologicalRole("psi-mi", "MI:0499", "unspecified role")));
-        b.setBiologicalRoles(List.of(new BiologicalRole("psi-mi", "MI:0499", "unspecified role")));
-        a.setExperimentalRoles(List.of(new ExperimentalRole("psi-mi", "MI:0498", "prey")));
-        a.setExperimentalRoles(List.of(new ExperimentalRole("psi-mi", "MI:0496", "bait")));
-        a.setTypes(List.of(new Type("psi-mi", "MI:0326", "protein")));
-        b.setTypes(List.of(new Type("psi-mi", "MI:0326", "protein")));
-        interaction.setCreation(new Date("2002/05/24"));
-        interaction.setUpdate(new Date("2002/05/24"));
-        final OutputStream outputStream = new FileOutputStream(new File(("output.mitab27")));
-        try (InteractionWriter writer = new InteractionWriter(outputStream)) {
-            writer.write(interaction);
-        }
-    }
+import java.io.File;
+import java.io.FileOutputStream;
+
+class Main {
+	public static void main(String[] args) {
+		Interactor a = new Interactor();
+		Interactor b = new Interactor();
+		Interaction interaction = new Interaction(a, b);
+		a.setPrimaryIdentifier(new Identifier("uniprotkb", "P49418"));
+		b.setPrimaryIdentifier(new Identifier("uniprotkb", "O43426"));
+		a.setAlternativeIdentifiers(List.of(new Identifier("intact", "EBI-7121510"), new Identifier("intact", "MINT-109264")));
+		b.setAlternativeIdentifiers(List.of(new Identifier("intact", "EBI-2821539")));
+		a.setAliases(List.of(new Alias("psi-mi", "amph_human", "display_long"), new Alias("uniprotkb", "AMPH", "gene name")));
+		b.setAliases(List.of(new Alias("psi-mi", "SYNJ1", "display_short"), new Alias("uniprotkb", "KIAA0910", "gene name synonym")));
+		interaction.setDetectionMethods(List.of(new DetectionMethod("psi-mi", "MI:0084", "phage display")));
+		interaction.setAuthors(List.of(new Author("Cestra et al. (1999)")));
+		interaction.setPublications(List.of(new Publication("pubmed", "10542231"), new Publication("mint", "MINT-5211933")));
+		a.setOrganisms(List.of(new Organism("taxid", "9606", "human"), new Organism("taxid", "9606", "Homo sapiens")));
+		b.setOrganisms(List.of(new Organism("taxid", "9606", "human"), new Organism("taxid", "9606", "Homo sapiens")));
+		interaction.setTypes(List.of(new Type("psi-mi", "MI:0407", "direct interaction")));
+		interaction.setDatabases(List.of(new Database("psi-mi", "MI:0471", "MINT")));
+		interaction.setIdentifiers(List.of(new Identifier("intact", "EBI-7121552")));
+		interaction.setConfidenceScores(List.of(new ConfidenceScore("intact-miscore", "0.56")));
+		a.setBiologicalRoles(List.of(new BiologicalRole("psi-mi", "MI:0499", "unspecified role")));
+		b.setBiologicalRoles(List.of(new BiologicalRole("psi-mi", "MI:0499", "unspecified role")));
+		a.setExperimentalRoles(List.of(new ExperimentalRole("psi-mi", "MI:0498", "prey")));
+		a.setExperimentalRoles(List.of(new ExperimentalRole("psi-mi", "MI:0496", "bait")));
+		a.setTypes(List.of(new Type("psi-mi", "MI:0326", "protein")));
+		b.setTypes(List.of(new Type("psi-mi", "MI:0326", "protein")));
+		interaction.setCreation(new Date("2002/05/24"));
+		interaction.setUpdate(new Date("2002/05/24"));
+		final OutputStream outputStream = new FileOutputStream(("output.mitab27"));
+		try (InteractionWriter writer = new InteractionWriter(outputStream)) {
+			writer.write(interaction);
+		}
+	}
 }
 ```
 

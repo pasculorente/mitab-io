@@ -18,9 +18,4 @@ public class BiologicalRole extends Field {
 		return super.getValue();
 	}
 
-	@Override
-	public String getDescription() {
-		return super.getDescription();
-	}
-
 }

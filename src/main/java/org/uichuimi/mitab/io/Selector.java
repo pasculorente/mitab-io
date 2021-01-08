@@ -20,6 +20,21 @@ import java.util.function.Function;
  */
 public class Selector {
 
+	/*
+	 * This is the preceding work for the selectors to work. This approach reduces the human
+	 * errors when dealing with multiple switch statements: since we want to friendly accept
+	 * selector column names and associate these names to object fields, a mapping between a
+	 * name and a field must be done. Traditionally, a switch is performed in the way:
+	 * switch(column) {
+	 *  case "identifier" -> return Interaction::getIdentifier
+	 *  ...
+	 * }
+	 * To avoid typos, missing branches and dissociation of names, we ensure that these names 
+	 * are closer to fields by implementing and annotation class: @PsiColumn. Developers 
+	 * associate names using this annotation. Now, we must reversely create these mappings.
+	 * For each name, we map its getter and the class of its field. And for each property,
+	 * its getter.
+	 */
 	private final static Map<String, Class<? extends Field>> interactionColumnTypes;
 	private final static Map<String, Class<? extends Field>> interactorColumnTypes;
 	private final static Map<String, Function<Interaction, List<? extends Field>>> interactionIndex;
@@ -174,11 +189,6 @@ public class Selector {
 		// By default, return the same
 		if (from == null && ranged == null)
 			return fields -> fields;
-		// From can be: null, positive or negative
-		// ranged can be: true or false
-		// Negative can be: null, positive or negative
-		// 18 combinations
-		// if ranged is false, negative is null -> 16
 		return fields -> {
 			int start = from == null ? 0 : from;
 			if (start < 0) start = fields.size() + start;

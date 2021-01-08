@@ -366,7 +366,7 @@ public class Interaction {
 	 * </dl>
 	 * Ex:2010/10/17
 	 *
-	 * @return
+	 * @return creation date
 	 */
 	public Date getCreation() {
 		return creation;
@@ -387,7 +387,7 @@ public class Interaction {
 	 * </dl>
 	 * Ex:2011/12/13
 	 *
-	 * @return
+	 * @return update date
 	 */
 	public Date getUpdate() {
 		return update;
@@ -432,7 +432,7 @@ public class Interaction {
 	 * <p>
 	 * Ex: true
 	 *
-	 * @return
+	 * @return true if negative, false or null if positive
 	 */
 	public Negative getNegative() {
 		return negative;
@@ -469,6 +469,7 @@ public class Interaction {
 		this.causalRegulatoryMechanism = causalRegulatoryMechanism;
 	}
 
+
 	/**
 	 * Causal statement: This column describes the effect of modulator entity A on a modulated
 	 * entity B.
@@ -484,15 +485,13 @@ public class Interaction {
 	 * </dl>
 	 * <p>
 	 * Ex: psi-mi:"MI:2240"(down regulates)
-	 *
-	 * @param causalStatement
 	 */
-	public void setCausalStatement(List<CausalStatement> causalStatement) {
-		this.causalStatement = causalStatement;
-	}
-
 	public List<CausalStatement> getCausalStatement() {
 		return causalStatement;
+	}
+
+	public void setCausalStatement(List<CausalStatement> causalStatement) {
+		this.causalStatement = causalStatement;
 	}
 
 	@Override
